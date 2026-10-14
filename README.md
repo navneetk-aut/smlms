@@ -51,7 +51,7 @@ Architecture is MVVM:
 ```bash
 git clone https://github.com/navneetk-aut/smlms.git
 cd smlms
-cp backend/.env.example backend/.env   # then edit JWT_SECRET to any long random string
+cp backend/env.example backend/.env   # then edit JWT_SECRET to any long random string
 ```
 
 ### 2. Start the backend
@@ -94,7 +94,7 @@ smlms/
 ├── backend/
 │   ├── server.py              # FastAPI app, routes, seed, auth
 │   ├── requirements.txt
-│   ├── .env.example           # copy to .env and edit JWT_SECRET
+│   ├── env.example           # copy to .env and edit JWT_SECRET
 │   └── tests/                 # pytest suite (22 cases)
 ├── frontend/
 │   ├── app/                   # Expo Router screens
