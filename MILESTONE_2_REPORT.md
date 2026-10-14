@@ -24,29 +24,53 @@ The project scope matches the Milestone 1 proposal almost 1-to-1: it ships every
 ### 2.1 Authentication (Figures 1–2)
 The login screen opens on a Playfair Display headline above a hero image of a modern university library, with the sign-in form on a lifted ivory card. Email/password are pre-filled with the demo credentials for a one-tap demo. A JWT access token is received, stored in SecureStore on native and AsyncStorage on web, and attached as a Bearer header to every subsequent request. Public registration always creates a `student`; the librarian seat is seeded on the server, which keeps role escalation off the public attack surface.
 
+![Figure 1 — Login screen with pre-filled demo credentials and a hero image of a university library.](./screenshots/01-login.png)
+
+![Figure 2 — Registration screen; public sign-up always creates a student role.](./screenshots/02-register.png)
+
 ### 2.2 Home Dashboard (Figure 3)
 After login the student lands on a Home tab that applies Jakob Nielsen's **"visibility of system status"** heuristic directly: Currently borrowed loans are the first content on the screen with coloured "14d left" chips (green ≥ 4 days, amber ≤ 3 days, red if overdue). Trending Picks sits below in a horizontal swim lane, and a Quick Actions row offers Scan QR, Browse, and My Shelf. A floating Scan FAB sits in the bottom-right corner satisfying Fitts's Law — the single most-valuable action is placed where the thumb naturally rests.
+
+![Figure 3 — Home dashboard with currently-borrowed carousel, trending picks, and quick actions.](./screenshots/03-home.png)
 
 ### 2.3 Search with Category Chips (Figures 4–5)
 Discover uses a sticky header pattern: a magnifying-glass input, a horizontal chip rail (All, Biography, Business, Computer Science, Fiction, History, Psychology, Science, Self-help, Software Engineering), and a vertical FlatList underneath. Chips never wrap; extra categories scroll off the right. Query is debounced at 250 ms and sent as `/api/books?q=…&category=…`. Figure 5 shows "Clean" filtered down to a single Clean Code result in under a second — the Milestone 1 non-functional requirement of "sub-2s search" is met.
 
+![Figure 4 — Search tab with sticky header, chip rail, and a vertical list of 20 books.](./screenshots/04-search.png)
+
+![Figure 5 — Query "Clean" filters the catalog down to a single matching book.](./screenshots/05-search-result.png)
+
 ### 2.4 Book Detail, Borrow, Reserve (Figure 6)
 Book Detail renders the cover centred against a blurred backdrop of the same cover, title in Playfair Display, a chip row for category/rating/availability, and a metadata card (Location, ISBN, copies). A sticky bottom CTA bar hosts the primary action — "Borrow this book" when a copy is free, otherwise "Reserve (join queue)". Both actions use native Alert dialogs for confirmation and fire a success haptic (`Haptics.notificationAsync`). On borrow, the server creates a loan dated +14 days and inserts a notification; on reserve, it computes the user's queue position and sends them a "You are #N in queue" notification.
+
+![Figure 6 — Book Detail with blurred-cover hero, metadata card, and sticky Borrow CTA.](./screenshots/06-book-detail.png)
 
 ### 2.5 My Library (Figure 7)
 A pill segmented control switches between **Active, History, Holds**. Active loans render Return buttons that call `/api/loans/return/{id}`; the server then promotes the first waiting reservation on that book to `ready` and notifies the user. Pull-to-refresh (`RefreshControl`) is wired in because this is the screen users will check most often.
 
+![Figure 7 — My Library's Active tab shows active loans with overdue/due badges and inline Return buttons.](./screenshots/07-library.png)
+
 ### 2.6 QR Scanner (Figure 9)
 QR Scanner is a full-screen dark modal with a central transparent frame, four amber corner cues, and a scanning line. A "Simulate scan" button at the bottom simulates the latency of a real decode (`setTimeout 1200 ms`) and routes to a random book's detail page — this preserves the UX without requiring real-camera permissions in the Expo Go preview. Swapping to real decoding is a 15-line change (`expo-camera` is already added to `app.json` permissions). Success haptic fires on resolve.
+
+![Figure 9 — Mock QR scanner with amber corner cues and simulated scan button.](./screenshots/09-scan.png)
 
 ### 2.7 Notifications (Figure 10)
 Notifications is a vertical list of brand-tinted cards. Unread items get a brand-tertiary background and a dot indicator; tapping a card marks it read via `/api/notifications/{id}/read`. Three notification kinds are emitted by the backend: `borrow` (confirmation), `reservation` (queue placed or ready to collect), and `return` (future).
 
+![Figure 10 — Notifications feed with unread highlight and type-specific icons.](./screenshots/10-notifications.png)
+
 ### 2.8 Profile with Digital Library Card (Figure 8)
 Profile is the business enhancement I built on top of Milestone 1 requirements. The screen renders a burgundy library card with the student's name, their ID (`S000001`), and a decorative barcode strip. This replaces the plastic card students usually lose and gives them a reason to re-open the app daily, which lifts the primary borrowing KPI. The Account section links to Notifications, Settings, Help. Librarians see an extra "Switch to Librarian Dashboard" row.
 
+![Figure 8 — Profile tab with avatar, role tag, and a scannable digital library card.](./screenshots/08-profile.png)
+
 ### 2.9 Librarian Dashboard, Manage Books, Loans, Reservations (Figures 11–12)
 The Librarian dashboard surfaces four KPI tiles (Books, Students, Active Loans, Reservations) and three tool entries. **Manage Books** is a searchable list with per-row Edit/Delete and a floating "+" FAB that opens a bottom-sheet modal with every book field. Role-based access is enforced server-side: a student token sent to `/api/librarian/*` returns `403` with no code reaching the controller.
+
+![Figure 11 — Librarian dashboard with four KPI tiles and tool entries.](./screenshots/11-librarian-dashboard.png)
+
+![Figure 12 — Manage Books CRUD list with per-row Edit/Delete and a floating "+" FAB.](./screenshots/12-manage-books.png)
 
 All features above are backed by a passing pytest suite of 22 cases, including: duplicate borrow (409), unauthorised bearer (401), librarian route from a student token (403), reservation queue ordering, idempotent seeding across restarts, and `_id` exclusion in every response.
 
