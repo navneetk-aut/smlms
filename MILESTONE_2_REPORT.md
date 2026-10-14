@@ -7,7 +7,7 @@
 
 The Smart Mobile Library Management System (SMLMS) is a cross-platform mobile application that gives university students a modern, pocket-sized interface to their campus library, and gives librarians a lightweight on-the-go management tool. The motivation is simple: our Milestone 1 analysis showed that students interact with the existing library website only when they absolutely must, because the desktop UI is slow, cluttered, and inaccessible from the stacks themselves. A thumb-friendly mobile client that supports discovery, borrowing, reservations, due-date tracking, and QR-based self-checkout can meaningfully increase borrowing engagement — the primary KPI of a university library — without replacing the heavier backend systems the library already relies on.
 
-**Repository**: `https://github.com/<your-username>/smlms` *(replace with the link produced by the "Save to GitHub" button after pushing)*. The repository README explains setup, environment variables, the two seeded test accounts, and provides step-by-step run instructions for both the FastAPI backend (`uvicorn server:app`) and the Expo frontend (`yarn start`). All source code, this report, and the raw screenshots sit in that repository.
+**Repository**: [https://github.com/navneetk-aut/smlms](https://github.com/navneetk-aut/smlms). The repository README explains setup, environment variables, the two seeded test accounts, and provides step-by-step run instructions for both the FastAPI backend (`uvicorn server:app`) and the Expo frontend (`yarn start`). All source code, this report, and the raw screenshots sit in that repository.
 
 **Install & run (summary)**
 1. `cd backend && pip install -r requirements.txt && uvicorn server:app --reload --port 8001`
