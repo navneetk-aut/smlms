@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Pressable, ActivityIndicator } from "react-native";
 import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import * as Haptics from "expo-haptics";
 import Icon from "@react-native-vector-icons/feather";
 import { colors, spacing, radius, fonts } from "@/src/theme";
 import { api } from "@/src/api";
@@ -24,6 +25,7 @@ export default function ScanScreen() {
         return;
       }
       const pick = books[Math.floor(Math.random() * books.length)];
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
       router.replace(`/book/${pick.id}`);
     } catch (e: any) {
       setError(e.message || "Could not identify QR");

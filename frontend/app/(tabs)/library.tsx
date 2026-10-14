@@ -1,11 +1,12 @@
 import { useCallback, useState } from "react";
 import {
   View, Text, StyleSheet, ScrollView, Pressable, FlatList,
-  ActivityIndicator, Alert,
+  ActivityIndicator, Alert, RefreshControl,
 } from "react-native";
 import { Image } from "expo-image";
 import { useRouter, useFocusEffect } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import * as Haptics from "expo-haptics";
 import Icon from "@react-native-vector-icons/feather";
 import { colors, spacing, radius, fonts } from "@/src/theme";
 import { api, type Loan, type Reservation } from "@/src/api";
@@ -29,6 +30,7 @@ export default function LibraryScreen() {
   const [loans, setLoans] = useState<Loan[]>([]);
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [acting, setActing] = useState<string | null>(null);
 
   const load = async () => {
@@ -39,6 +41,7 @@ export default function LibraryScreen() {
       setReservations(r);
     } finally {
       setLoading(false);
+      setRefreshing(false);
     }
   };
 
@@ -48,6 +51,7 @@ export default function LibraryScreen() {
     setActing(loan.id);
     try {
       await api.returnLoan(loan.id);
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
       await load();
     } catch (e: any) {
       Alert.alert("Could not return", e.message);
@@ -83,8 +87,16 @@ export default function LibraryScreen() {
           data={activeLoans}
           keyExtractor={(l) => l.id}
           contentContainerStyle={styles.list(insets.bottom)}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={() => { setRefreshing(true); load(); }}
+              tintColor={colors.brand}
+            />
+          }
           renderItem={({ item }) => {
             const days = daysLeft(item.due_at);
+            const overdue = days <= 0;
             return (
               <View style={styles.card}>
                 <Pressable onPress={() => item.book && router.push(`/book/${item.book.id}`)} style={styles.cardMain}>
@@ -92,10 +104,10 @@ export default function LibraryScreen() {
                   <View style={{ flex: 1 }}>
                     <Text style={styles.title} numberOfLines={2}>{item.book?.title}</Text>
                     <Text style={styles.author}>{item.book?.author}</Text>
-                    <View style={[styles.dueTag, { backgroundColor: days <= 3 ? colors.warning : colors.success }]}>
-                      <Icon name="clock" size={11} color={colors.onSuccess} />
+                    <View style={[styles.dueTag, { backgroundColor: overdue ? colors.error : days <= 3 ? colors.warning : colors.success }]}>
+                      <Icon name={overdue ? "alert-circle" : "clock"} size={11} color={colors.onSuccess} />
                       <Text style={styles.dueTagText}>
-                        {days > 0 ? `Due in ${days} days` : "Overdue"}
+                        {overdue ? `Overdue by ${-days}d` : `Due in ${days} days`}
                       </Text>
                     </View>
                   </View>

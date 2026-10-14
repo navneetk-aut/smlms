@@ -6,6 +6,7 @@ import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import * as Haptics from "expo-haptics";
 import Icon from "@react-native-vector-icons/feather";
 import { colors, spacing, radius, fonts } from "@/src/theme";
 import { api, type Book } from "@/src/api";
@@ -34,12 +35,14 @@ export default function BookDetailScreen() {
     setActing(true);
     try {
       await api.borrow(book.id);
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
       Alert.alert("Borrowed!", `You've borrowed '${book.title}'. Due in 14 days.`, [
         { text: "View my shelf", onPress: () => router.replace("/(tabs)/library") },
         { text: "OK" },
       ]);
       load();
     } catch (e: any) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error).catch(() => {});
       Alert.alert("Could not borrow", e.message);
     } finally {
       setActing(false);
@@ -51,6 +54,7 @@ export default function BookDetailScreen() {
     setActing(true);
     try {
       const r = await api.reserve(book.id);
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
       Alert.alert(
         "Reserved",
         `You're #${r.queue_position} in the queue. We'll notify you when it's ready.`,

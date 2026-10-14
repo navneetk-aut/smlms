@@ -23,6 +23,7 @@ export default function TabsLayout() {
         name="index"
         options={{
           title: "Home",
+          tabBarButtonTestID: "tab-home",
           tabBarIcon: ({ color, size }) => <Icon name="home" size={size} color={color} />,
         }}
       />
@@ -30,6 +31,7 @@ export default function TabsLayout() {
         name="search"
         options={{
           title: "Search",
+          tabBarButtonTestID: "tab-search",
           tabBarIcon: ({ color, size }) => <Icon name="search" size={size} color={color} />,
         }}
       />
@@ -37,6 +39,7 @@ export default function TabsLayout() {
         name="library"
         options={{
           title: "Library",
+          tabBarButtonTestID: "tab-library",
           tabBarIcon: ({ color, size }) => <Icon name="book-open" size={size} color={color} />,
         }}
       />
@@ -44,6 +47,7 @@ export default function TabsLayout() {
         name="profile"
         options={{
           title: "Profile",
+          tabBarButtonTestID: "tab-profile",
           tabBarIcon: ({ color, size }) => <Icon name="user" size={size} color={color} />,
         }}
       />

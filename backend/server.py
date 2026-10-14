@@ -29,7 +29,7 @@ from jwt.exceptions import InvalidTokenError
 # -----------------------------------------------------------------------------
 MONGO_URL = os.environ["MONGO_URL"]
 DB_NAME = os.environ.get("DB_NAME", "test_database")
-JWT_SECRET = os.environ.get("JWT_SECRET", "smlms-dev-secret-change-in-prod-2026")
+JWT_SECRET = os.environ["JWT_SECRET"]  # must be set in backend/.env
 JWT_ALGO = "HS256"
 TOKEN_MINUTES = 60 * 24 * 7  # 7 days
 

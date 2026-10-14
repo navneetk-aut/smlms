@@ -254,7 +254,16 @@ const styles = StyleSheet.create({
     width: 56, height: 56, borderRadius: 28,
     backgroundColor: colors.brandPrimary,
     alignItems: "center", justifyContent: "center",
-    elevation: 6, shadowColor: "#000", shadowOpacity: 0.2, shadowRadius: 8,
+    elevation: 6,
+    ...Platform.select({
+      web: { boxShadow: "0 4px 12px rgba(0,0,0,0.2)" },
+      default: {
+        shadowColor: "#000",
+        shadowOpacity: 0.2,
+        shadowRadius: 8,
+        shadowOffset: { width: 0, height: 4 },
+      },
+    }),
   },
   modalBg: { flex: 1, backgroundColor: "rgba(28,27,26,0.5)", justifyContent: "flex-end" },
   modalCard: {
