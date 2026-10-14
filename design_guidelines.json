@@ -1,0 +1,244 @@
+{
+  "app_name": "SMLMS - Smart Mobile Library Management System",
+  "personality": "3 Editorial Mobile LIGHT",
+  "personality_one_liner": "A sophisticated, trustworthy academic library experience combining elegant editorial typography with modern iOS-native glassmorphism.",
+  "color": {
+    "surface": "#FDFBF7",
+    "onSurface": "#1C1B1A",
+    "surfaceSecondary": "#F4EFEA",
+    "onSurfaceSecondary": "#1C1B1A",
+    "surfaceTertiary": "#EAE4DC",
+    "onSurfaceTertiary": "#1C1B1A",
+    "surfaceInverse": "#1C1B1A",
+    "onSurfaceInverse": "#FDFBF7",
+    "brand": "#7A3B3F",
+    "onBrand": "#FDFBF7",
+    "brandPrimary": "#7A3B3F",
+    "onBrandPrimary": "#FDFBF7",
+    "brandSecondary": "#D8B888",
+    "onBrandSecondary": "#1C1B1A",
+    "brandTertiary": "#EAE0DE",
+    "onBrandTertiary": "#7A3B3F",
+    "success": "#2E4A35",
+    "onSuccess": "#FDFBF7",
+    "warning": "#B87A24",
+    "onWarning": "#1C1B1A",
+    "error": "#962D2D",
+    "onError": "#FDFBF7",
+    "info": "#4A5D75",
+    "onInfo": "#FDFBF7",
+    "border": "#EAE4DC",
+    "borderStrong": "#C8BCB3",
+    "divider": "#EAE4DC",
+    "muted": "#73706A"
+  },
+  "typography": {
+    "displayFontFamily": "Playfair Display",
+    "textFontFamily": "DM Sans",
+    "scale": {
+      "sm": 12,
+      "base": 14,
+      "lg": 16,
+      "xl": 20,
+      "2xl": 24
+    }
+  },
+  "spacing": {
+    "rule": "Generous vertical breathing room typical of editorial layouts. Consistent spacing groups related metadata (Book cover + Title + Author).",
+    "xs": 4,
+    "sm": 8,
+    "md": 12,
+    "lg": 16,
+    "xl": 24,
+    "2xl": 32,
+    "3xl": 48
+  },
+  "radius_tokens": {
+    "sm": 6,
+    "md": 12,
+    "lg": 20,
+    "pill": 999
+  },
+  "shadow_tier": 0,
+  "navigation": "bottom_tabs",
+  "icon_set": "Feather",
+  "glassmorphism": {
+    "enabled": true,
+    "do's": [
+      "Bottom tab bar for students (Home, Search, My Library, Profile).",
+      "Sticky headers over scrolling content, especially in Search and Home.",
+      "FAB for QR Scanner (glass overlay with brand tint).",
+      "Sticky bottom CTA bar in Book Details (Borrow/Reserve)."
+    ],
+    "dont's": [
+      "Never on form fields, dense metadata rows, or standard list items.",
+      "Avoid stacking multiple glass surfaces on top of each other."
+    ]
+  },
+  "platform_libraries": {
+    "glass": {
+      "ios": "expo-blur",
+      "android": "expo-blur",
+      "low_end_android_fallback": "solid surfaceSecondary"
+    },
+    "image": "expo-image",
+    "blur": "expo-blur",
+    "bottom_sheet": "@gorhom/bottom-sheet",
+    "animation": "react-native-reanimated",
+    "gesture": "react-native-gesture-handler"
+  },
+  "screens": [
+    {
+      "name": "Login/Register",
+      "purpose": "Secure JWT authentication screen.",
+      "layout": "Hero image of university crest or library building with a 2-stop gradient fade to surface. Single-column form layout. Floating sticky CTA button at the bottom.",
+      "states": {
+        "loading": "Spinner overlaid on disabled CTA.",
+        "empty": "N/A",
+        "error": "Inline text in error color above CTA + shake animation."
+      }
+    },
+    {
+      "name": "Student Home/Dashboard",
+      "purpose": "Centralized hub for active loans and book discovery.",
+      "layout": "Proactive status tracking (active loans/due dates) at the top. 'Trending Picks' and 'New Arrivals' in horizontal swim lanes (cards). A floating action button (FAB) pinned above the bottom tab bar for 'Scan QR'.",
+      "states": {
+        "loading": "Skeleton UI for swim lanes and active loans.",
+        "empty": "Illustration of open book with 'No active loans' message.",
+        "error": "Readable message + Retry button taking full screen."
+      }
+    },
+    {
+      "name": "Book Search",
+      "purpose": "Discover books via query or curated categories.",
+      "layout": "Sticky glass header with a search input. A horizontal scrolling row of filter chips (brandTertiary) below the search bar. Vertical list of book cards below.",
+      "states": {
+        "loading": "Skeleton book rows.",
+        "empty": "Illustration + 'No books found matching your criteria.'",
+        "error": "Readable message + Retry button."
+      }
+    },
+    {
+      "name": "Book Details",
+      "purpose": "View book metadata and execute primary actions (Borrow/Reserve).",
+      "layout": "Large featured cover image at top with glassmorphic top header. Book title in Playfair Display. Availability status rendered as clear success/warning semantic chips. Location and Author in readable lists. A sticky glass footer anchored at the bottom with the primary 'Borrow' or 'Reserve' CTA.",
+      "states": {
+        "loading": "Centered spinner.",
+        "empty": "N/A",
+        "error": "Readable message + Retry button."
+      }
+    },
+    {
+      "name": "Borrow/Reserve Flow",
+      "purpose": "Transactional confirmation for borrowing or queuing.",
+      "layout": "Rendered as a `@gorhom/bottom-sheet` modal layered over the Book Details screen. Clean confirmation details with queue position highlighted in typography scale (xl) if reserving.",
+      "states": {
+        "loading": "Loading spinner on primary CTA button.",
+        "empty": "N/A",
+        "error": "Inline error text inside the bottom sheet."
+      }
+    },
+    {
+      "name": "My Library",
+      "purpose": "Manage active loans, holds, and borrowing history.",
+      "layout": "Pinned glass segmented control (Active, History, Holds). Vertical list of books. Active loans prominently display due dates with warning colors if near due.",
+      "states": {
+        "loading": "Skeleton list rows.",
+        "empty": "Empty bookshelf illustration + 'Your shelf is currently empty.'",
+        "error": "Readable message + Retry button."
+      }
+    },
+    {
+      "name": "QR Scanner (Mock)",
+      "purpose": "Simulates scanning a book QR code to open its detail page.",
+      "layout": "Full-screen camera view (mocked with an image backdrop) and a central transparent scanning frame with border corners. 'Cancel' text button in the glass header.",
+      "states": {
+        "loading": "Simulated scanning animation.",
+        "empty": "N/A",
+        "error": "Error toast: 'QR not recognized'."
+      }
+    },
+    {
+      "name": "Notifications",
+      "purpose": "Alert users of due dates and reservation availability.",
+      "layout": "Vertical list of notification cards (surfaceSecondary). Unread notifications highlighted with a subtle brandTertiary background tint.",
+      "states": {
+        "loading": "Skeleton UI list.",
+        "empty": "Icon + 'You are all caught up.'",
+        "error": "Readable message + Retry button."
+      }
+    },
+    {
+      "name": "User Profile",
+      "purpose": "View user details and digital library card.",
+      "layout": "Profile banner with initials avatar. Mock digital barcode card for library access. Standard settings list. If user has librarian role, a prominent 'Switch to Librarian Dashboard' section.",
+      "states": {
+        "loading": "Centered spinner.",
+        "empty": "N/A",
+        "error": "Readable message + Retry button."
+      }
+    },
+    {
+      "name": "Librarian Dashboard",
+      "purpose": "Overview of administrative tools.",
+      "layout": "Grid of utility cards (Manage Books, View Borrowers, Approve Returns, View Reservations) using a clean, flat data-dense structure.",
+      "states": {
+        "loading": "Centered spinner.",
+        "empty": "N/A",
+        "error": "Readable message + Retry button."
+      }
+    },
+    {
+      "name": "Manage Books",
+      "purpose": "Librarian view for CRUD operations on catalog.",
+      "layout": "Searchable vertical list of books. Floating Action Button for 'Add Book'.",
+      "states": {
+        "loading": "Skeleton list.",
+        "empty": "Empty state illustration + CTA to add.",
+        "error": "Readable message + Retry button."
+      }
+    },
+    {
+      "name": "Approve Returns",
+      "purpose": "Queue of books awaiting librarian check-in.",
+      "layout": "List of pending returns. Each row has an 'Approve' action button.",
+      "states": {
+        "loading": "Skeleton list.",
+        "empty": "Icon + 'No pending returns.'",
+        "error": "Readable message + Retry button."
+      }
+    }
+  ],
+  "images": {
+    "login_hero": {
+      "url": "https://images.unsplash.com/photo-1597920940566-a77511f9327d?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzl8MHwxfHNlYXJjaHwxfHxiZWF1dGlmdWwlMjBtb2Rlcm4lMjB1bml2ZXJzaXR5JTIwbGlicmFyeSUyMGludGVyaW9yfGVufDB8fHx8MTc5MTk1NTM3Nnww&ixlib=rb-4.1.0&q=85",
+      "alt": "Beautiful modern university library interior"
+    },
+    "university_crest": {
+      "url": "https://images.unsplash.com/photo-1788166971440-2afea0f6695c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2NDN8MHwxfHNlYXJjaHwxfHx1bml2ZXJzaXR5JTIwY3Jlc3QlMjBsb2dvJTIwdHJhbnNwYXJlbnR8ZW58MHx8fHwxNzkxOTU1Mzc3fDA&ixlib=rb-4.1.0&q=85",
+      "alt": "University stone crest relief"
+    },
+    "empty_shelf": {
+      "url": "https://images.unsplash.com/photo-1593430980369-68efc5a5eb34?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzV8MHwxfHNlYXJjaHwxfHxlbXB0eSUyMHdvb2RlbiUyMGJvb2tzaGVsZnxlbnwwfHx8fDE3OTE5NTUzODJ8MA&ixlib=rb-4.1.0&q=85",
+      "alt": "Empty wooden bookshelf"
+    }
+  },
+  "instructions_to_main_agent": [
+    "Follow '3 Editorial Mobile LIGHT' layout strictly: use generous vertical spacing and allow the interface to feel calm, authoritative, and academic.",
+    "Typography: Use 'Playfair Display' for all Headings/Book Titles and 'DM Sans' for body copy and UI elements. Ensure you load these properly.",
+    "Colors: Adhere strictly to the defined warm palette with the Deep Burgundy (brand) accent. NO BLUE or PURPLE is to be used anywhere.",
+    "Glassmorphism: Implement 'expo-blur' for the bottom tabs, sticky header backgrounds, and the floating Action Button (QR Scan) to give an iOS-native premium feel.",
+    "Image Scrims: Any text displayed on top of book covers or hero images must utilize a 3-stop vertical gradient scrim from transparent to surfaceInverse, ensuring WCAG AA contrast.",
+    "Layout Rules: Use sticky CTA buttons placed inside a Fixed Container at the root level (bottom safe area) on the Book Details screen for Borrow/Reserve functionality.",
+    "States: Make sure Loading/Empty/Error states fill the available space (flex: 1) and align center.",
+    "Avoid Anti-patterns: Do not use Emojis anywhere. Do not use generic user-circle icons (use initials). Limit border width to 1pt maximum.",
+    "Learn from Research: Library app success relies on Fitt's Law (Thumb-reachable bottom CTA for borrowing), Hick's Law (clean, minimalist navigation), and Proactive Status Tracking (displaying active loans prominently on the Home dashboard)."
+  ],
+  "haptics": {
+    "primary_button_press": "impactLight",
+    "tab_change": "selection",
+    "borrow_success": "notificationSuccess",
+    "reserve_confirm": "impactMedium",
+    "error_state": "notificationError"
+  }
+}
